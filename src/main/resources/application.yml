@@ -1,0 +1,46 @@
+
+server:
+  port: 1888
+  shutdown: graceful
+spring:
+  rabbitmq:
+    host: dohko.inner.rabbitmq.hualala.com
+    port: 5672
+    username: admin
+    password: admin
+    listener:
+      simple:
+        prefetch: 20
+        concurrency: 2
+        max-concurrency: 10
+        acknowledge-mode: auto
+        retry:
+          enabled: true
+          max-attempts: 1
+  application:
+    name: spring-learning
+  datasource:
+    url: jdbc:mysql://dohko.mysql.003.master.hualala.com:3306/test?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    username: supply_chain
+    password: utFTUgDi
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  # flyway配置
+  flyway:
+    # 是否启用flyway
+    enabled: false
+    # 迁移sql脚本文件存放路径，官方默认db/migration
+    locations: classpath:db/migration
+    # 迁移sql脚本文件名称的前缀，默认V
+    sql-migration-prefix: V
+    # 迁移sql脚本文件名称的分隔符，默认2个下划线__
+    sql-migration-separator: __
+    # 迁移sql脚本文件名称的后缀
+    sql-migration-suffixes: .sql
+    # 迁移时是否进行校验，默认true
+    validate-on-migrate: true
+    # 当迁移发现数据库非空且存在没有元数据的表时，自动执行基准迁移，新建schema_version表
+    baseline-on-migrate: true
+    # 是否关闭要清除已有库下的表功能,生产环境必须为true,否则会删库
+    clean-disabled: true
+rabbit:
+  callbackBalancePayQueue: q-t-spring-learning-event-bus
